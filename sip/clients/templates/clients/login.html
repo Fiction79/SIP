@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login | SIP Cloud</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+body {
+      margin: 0;
+      height: 100vh;
+      background: radial-gradient(circle at 25% 25%, #1E1B4B 0%, #0F172A 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+      color: #E5E7EB;
+    }
+.login-container {
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 2.5rem;
+      width: 370px;
+      text-align: center;
+      box-shadow: 0 0 25px rgba(99, 102, 241, 0.2);
+      animation: fadeIn 0.8s ease;
+    }
+@keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      color: #FFFFFF;
+    }
+form {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 0.9rem 1rem;
+      margin: 0.6rem 0;
+      border: none;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #E5E7EB;
+      font-size: 1rem;
+      outline: none;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+input:focus {
+      box-shadow: 0 0 0 2px #6366F1;
+      background: rgba(255, 255, 255, 0.12);
+    }
+button {
+      background: linear-gradient(135deg, #6366F1, #06B6D4);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 0.9rem 1rem;
+      width: 100%;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 0.6rem;
+      box-sizing: border-box;
+    }
+button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.35);
+    }
+.footer-text {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: #9CA3AF;
+    }
+</style>
+</head>
+<body>
+  <div class="login-container">
+    <h1>SIP Cloud</h1>
+    <form method="POST" action="{% url 'login' %}">
+      {% csrf_token %}
+      <input type="text" name="username" placeholder="Username" required />
+      <input type="password" name="password" placeholder="Password" required />
+      <button type="submit">Login</button>
+    </form>
+    <p class="footer-text">Secure Personal Cloud • Raspberry Pi</p>
+  </div>
+</body>
+</html>

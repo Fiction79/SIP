@@ -1,0 +1,191 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard | SIP Cloud</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 20% 20%, #1E1B4B 0%, #0F172A 100%);
+      font-family: 'Inter', sans-serif;
+      color: #E5E7EB;
+    }
+
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(17, 24, 39, 0.6);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 10;
+    }
+
+    .navbar h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.4rem;
+      color: #FFFFFF;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: #A5B4FC;
+      font-weight: 500;
+      transition: opacity 0.2s ease;
+    }
+
+    .navbar a:hover { opacity: 0.8; }
+
+    .content {
+      margin-top: 90px;
+      padding: 2rem;
+      max-width: 1100px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .welcome {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 500;
+      margin-bottom: 2rem;
+      color: #FFFFFF;
+    }
+
+    .upload-section {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 1.8rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .upload-section h3 {
+      font-family: 'Poppins', sans-serif;
+      color: #E0E7FF;
+      margin-bottom: 1rem;
+    }
+
+    .upload-section input[type="file"] {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 0.6rem;
+      border-radius: 10px;
+      color: #E5E7EB;
+      border: none;
+      width: 100%;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #6366F1, #06B6D4);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 0.6rem 1.2rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    }
+
+    .file-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 1.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(10px);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 25px rgba(99, 102, 241, 0.25);
+    }
+
+    .card h3 {
+      font-family: 'Poppins', sans-serif;
+      color: #E0E7FF;
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: #9CA3AF;
+    }
+
+    .card-actions {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn-delete {
+      background: #DC2626;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 3rem;
+      color: #6B7280;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <h2>SIP Cloud</h2>
+    <a href="{% url 'logout' %}">Logout</a>
+  </div>
+
+  <div class="content">
+    <div class="welcome">Welcome back, {{ user.username }} 👋</div>
+
+    <div class="upload-section">
+      <h3>Upload a New File</h3>
+      <form method="POST" enctype="multipart/form-data" action="{% url 'upload' %}">
+        {% csrf_token %}
+        <input type="file" name="file" required />
+        <button type="submit" class="btn">Upload</button>
+      </form>
+    </div>
+
+    <h3 style="margin-top:2rem;">Your Files</h3>
+    <div class="file-grid">
+      {% for file in files %}
+      <div class="card">
+        <h3>{{ file.name }}</h3>
+        <p>{{ file.size }} MB</p>
+        <div class="card-actions">
+          <a href="{% url 'download' file.name %}"><button class="btn">Download</button></a>
+          <a href="{% url 'delete' file.name %}"><button class="btn btn-delete">Delete</button></a>
+        </div>
+      </div>
+      {% empty %}
+      <p>No files uploaded yet.</p>
+      {% endfor %}
+    </div>
+
+    <div class="footer">© 2025 SIP Cloud — Secure Personal Storage</div>
+  </div>
+</body>
+</html>
